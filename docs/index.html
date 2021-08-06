@@ -1,20 +1,25 @@
-<meta charset="UTF-8">
-<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-<script src="data.json"></script>
-<style>
-  .ranks > div {
-    display: inline-block;
-    height: 4px;
-  }
-  .sortby {
-    margin-bottom: 5px;
-  }
-  a {
-    color: black;
-    font-weight: bold;
-    text-decoration: none;
-  }
-</style>
+<head>
+  <meta charset="UTF-8">
+  <meta property="og:image" content="og-image.png" />
+  <title>Trackmania Track of the Day Medal Distribution</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="data.json"></script>
+  <style>
+    .ranks > div {
+      display: inline-block;
+      height: 4px;
+    }
+    .sortby {
+      margin-bottom: 5px;
+    }
+    a {
+      color: black;
+      font-weight: bold;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
 <div id="app">
   <center><h3>Trackmania Track of the Day Medal Distribution</h3></center>
   <center><p>This shows how many people have obtained each medal on every track of the day. This can help you find easy author times to get or answer the question of whether you are not good or the map is hard!</p></center>
@@ -39,7 +44,7 @@
     <li>The hardest map to get any medal on is February 18 2021 - <a href="https://trackmania.io/#/leaderboard/pzYbzS5LsixHloqR9tRFADCpzX0">Speedfun Coast</a> by priez with only 3893 people having bronze or better on it!</li>
     <li>priez is the mapper with the most maps selected for Track of the Day with 11 of them!</li>
     <li>You basically just need to finish May 6 2021 - <a href="https://trackmania.io/#/leaderboard/rCfTUF_cqqBWsUKVjBL99IiJxLl">Vortioxetin</a> by DriftingDagmar to get the Author Time on it, as only 13% of people got another medal.
-  <ul>
+  </ul>
   <center><p>Data was collected between August 2nd and August 6th 2021. Data is capped at 10,000 by the Trackmania API.</p></center>
   <center><p>Made by <a href="https://twitter.com/vjeux" target="_blank">vjeux</a> with data from <a href="https://trackmania.io/" target="_blank">Trackmania.io</a> with help from <a href="https://github.com/sponsors/codecat" target="_blank">codecat</a></p></center>
 </div>
@@ -142,3 +147,4 @@ var app = new Vue({
   }
 })
 </script>
+</body>
