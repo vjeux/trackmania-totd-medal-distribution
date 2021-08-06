@@ -1,0 +1,144 @@
+<meta charset="UTF-8">
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script src="data.json"></script>
+<style>
+  .ranks > div {
+    display: inline-block;
+    height: 4px;
+  }
+  .sortby {
+    margin-bottom: 5px;
+  }
+  a {
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+  }
+</style>
+<div id="app">
+  <center><h3>Trackmania Track of the Day Medal Distribution</h3></center>
+  <center><p>This shows how many people have obtained each medal on every track of the day. This can help you find easy author times to get or answer the question of whether you are not good or the map is hard!</p></center>
+  <center class="sortby">
+    Sort by: <button v-on:click="sortDate">Date</button>, <button v-on:click="sortAT">Author Time</button>, <button v-on:click="sortGold">Gold</button>, <button v-on:click="sortSilver">Silver</button>, <button v-on:click="sortBronze">Bronze</button>, <button v-on:click="sortAuthor">Author Name</button>.
+  </center>
+  <div v-for="map in days">
+    <span>
+        {{monthWords[map.month - 1]}} {{map.day}} {{map.year}} - <a v-bind:href="map.url" target="_blank">{{ map.filteredMapName }}</a> by {{map.authorName}}
+    </span>
+    <div class="ranks">
+      <div v-bind:title="map.rankAT" v-bind:style="{backgroundColor: 'green', width: (map.rankAT / 100) + '%'}"></div><!--
+      --><div v-bind:title="map.rankGold" v-bind:style="{backgroundColor: '#f9eb46', width: ((map.rankGold - map.rankAT) / 100) + '%'}"></div><!--
+      --><div v-bind:title="map.rankSilver" v-bind:style="{backgroundColor: 'gray', width: ((map.rankSilver - map.rankGold) / 100) + '%'}"></div><!--
+      --><div v-bind:title="map.rankBronze" v-bind:style="{backgroundColor: 'brown', width: ((map.rankBronze - map.rankSilver) / 100) + '%'}"></div>
+    </div>
+  </div>
+  <h3>Interesting Facts</h3>
+  <ul>
+    <li>The hardest map to get Author Time on is April 29 2021 - <a href="https://trackmania.io/#/leaderboard/Qng0TknyPLsbWvymeMfmRACcz_m">MIXTA VIA</a> by Erizel with only 12 people having gotten it!</li>
+    <li>If you want easy Author Times, the maps from the first month of the release, July 2020, are significantly easier to get than in more recent history!</li>
+    <li>The hardest map to get any medal on is February 18 2021 - <a href="https://trackmania.io/#/leaderboard/pzYbzS5LsixHloqR9tRFADCpzX0">Speedfun Coast</a> by priez with only 3893 people having bronze or better on it!</li>
+    <li>priez is the mapper with the most maps selected for Track of the Day with 11 of them!</li>
+    <li>You basically just need to finish May 6 2021 - <a href="https://trackmania.io/#/leaderboard/rCfTUF_cqqBWsUKVjBL99IiJxLl">Vortioxetin</a> by DriftingDagmar to get the Author Time on it, as only 13% of people got another medal.
+  <ul>
+  <center><p>Data was collected between August 2nd and August 6th 2021. Data is capped at 10,000 by the Trackmania API.</p></center>
+  <center><p>Made by <a href="https://twitter.com/vjeux" target="_blank">vjeux</a> with data from <a href="https://trackmania.io/" target="_blank">Trackmania.io</a> with help from <a href="https://github.com/sponsors/codecat" target="_blank">codecat</a></p></center>
+</div>
+<script>
+const monthWords = [
+  'January', 'February', 'March', 'April', 'May', 'June', 'July',
+  'August', 'September', 'October', 'November', 'December'
+];
+
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    monthWords,
+    days: data,
+    sorted: 'AT',
+  },
+  methods: {
+    sortDate: function() {
+      this.days.sort((a, b) =>
+        (b.year * 10000 + b.month * 100 + b.day) -
+        (a.year * 10000 + a.month * 100 + a.day));
+      if (this.sorted === 'Date') {
+        this.days.reverse();
+        this.sorted = 'Date-';
+      } else {
+        this.sorted = 'Date';
+      }
+    },
+    sortAT: function() {
+      this.days.sort((a, b) =>
+        (b.year * 10000 + b.month * 100 + b.day) -
+        (a.year * 10000 + a.month * 100 + a.day));
+      this.days.sort((a, b) => b.rankAT - a.rankAT);
+      if (this.sorted === 'AT') {
+        this.days.reverse();
+        this.sorted = 'AT-';
+      } else {
+        this.sorted = 'AT';
+      }
+    },
+    sortGold: function() {
+      this.days.sort((a, b) =>
+        (b.year * 10000 + b.month * 100 + b.day) -
+        (a.year * 10000 + a.month * 100 + a.day));
+      this.days.sort((a, b) => b.rankAT - a.rankAT);
+      this.days.sort((a, b) => b.rankGold - a.rankGold);
+      if (this.sorted === 'Gold') {
+        this.days.reverse();
+        this.sorted = 'Gold-';
+      } else {
+        this.sorted = 'Gold';
+      }
+    },
+    sortSilver: function() {
+      this.days.sort((a, b) =>
+        (b.year * 10000 + b.month * 100 + b.day) -
+        (a.year * 10000 + a.month * 100 + a.day));
+      this.days.sort((a, b) => b.rankAT - a.rankAT);
+      this.days.sort((a, b) => b.rankGold - a.rankGold);
+      this.days.sort((a, b) => b.rankSilver - a.rankSilver);
+      if (this.sorted === 'Silver') {
+        this.days.reverse();
+        this.sorted = 'Silver-';
+      } else {
+        this.sorted = 'Silver';
+      }
+    },
+    sortBronze: function() {
+      this.days.sort((a, b) =>
+        (b.year * 10000 + b.month * 100 + b.day) -
+        (a.year * 10000 + a.month * 100 + a.day));
+      this.days.sort((a, b) => b.rankAT - a.rankAT);
+      this.days.sort((a, b) => b.rankGold - a.rankGold);
+      this.days.sort((a, b) => b.rankSilver - a.rankSilver);
+      this.days.sort((a, b) => b.rankBronze - a.rankBronze);
+      if (this.sorted === 'Bronze') {
+        this.days.reverse();
+        this.sorted = 'Bronze-';
+      } else {
+        this.sorted = 'Bronze';
+      }
+    },
+    sortAuthor: function() {
+      this.days.sort((a, b) =>
+        (b.year * 10000 + b.month * 100 + b.day) -
+        (a.year * 10000 + a.month * 100 + a.day));
+      this.days.sort((a, b) => b.rankAT - a.rankAT);
+      this.days.sort((a, b) => b.rankGold - a.rankGold);
+      this.days.sort((a, b) => b.rankSilver - a.rankSilver);
+      this.days.sort((a, b) => b.rankBronze - a.rankBronze);
+      this.days.sort((a, b) => a.authorName.localeCompare(b.authorName));
+      if (this.sorted === 'Author') {
+        this.days.reverse();
+        this.sorted = 'Author-';
+      } else {
+        this.sorted = 'Author';
+      }
+    },
+  }
+})
+</script>
